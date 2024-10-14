@@ -1,0 +1,202 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/lightover-solid-server/^0.0.0/components/context.jsonld"
+  ],
+  "import": [
+    "css:config/app/init/static-root.json",
+    "css:config/app/main/default.json",
+    "css:config/app/variables/default.json",
+    "css:config/http/handler/default.json",
+    "css:config/http/middleware/default.json",
+    "css:config/http/notifications/all.json",
+    "css:config/http/server-factory/http.json",
+    "css:config/http/static/default.json",
+    "css:config/identity/access/public.json",
+    "css:config/identity/email/default.json",
+    "css:config/identity/handler/default.json",
+    "css:config/identity/oidc/default.json",
+    "css:config/identity/ownership/token.json",
+    "css:config/identity/pod/static.json",
+    "css:config/ldp/authentication/dpop-bearer.json",
+    "css:config/ldp/authorization/webacl.json",
+    "css:config/ldp/handler/default.json",
+    "css:config/ldp/metadata-parser/default.json",
+    "css:config/ldp/metadata-writer/default.json",
+    "css:config/ldp/modes/default.json",
+    "css:config/storage/backend/file.json",
+    "css:config/storage/key-value/resource-store.json",
+    "css:config/storage/location/pod.json",
+    "css:config/storage/middleware/default.json",
+    "css:config/util/auxiliary/acl.json",
+    "css:config/util/identifiers/suffix.json",
+    "css:config/util/index/default.json",
+    "css:config/util/logging/winston.json",
+    "css:config/util/representation-conversion/default.json",
+    "css:config/util/resource-locker/file.json",
+    "css:config/util/variables/default.json",
+    "lss:config/create-login.json"
+  ],
+  "@graph": [
+    {
+      "comment": "A Solid server that stores its resources on disk and uses WAC for authorization."
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:PromptHandler" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideListInsertAt",
+          "overrideParameter": { "@id": "PromptHandler:_promptRoutes" },
+          "overrideTarget": 2,
+          "overrideValue": {
+            "PromptHandler:_promptRoutes_key": "create",
+            "PromptHandler:_promptRoutes_value": { "@id": "urn:solid-server:default:CreateLoginPasswordRoute" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:PromptFactory" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideListInsertAt",
+          "overrideParameter": { "@id": "SequenceHandler:_handlers" },
+          "overrideTarget": 1,
+          "overrideValue": { "@type": "CreatePromptFactory" }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:StylesStaticAsset" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "StaticAssetEntry",
+            "filePath": "templates/styles/"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:ImagesStaticAsset" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "StaticAssetEntry",
+            "filePath": "templates/images/"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:MainTemplateEngine" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "StaticTemplateEngine",
+            "template": "templates/main.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:OidcConsentHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/oidc/consent.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:CreatePasswordHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/create.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:ForgotPasswordHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/forgot.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:PasswordLoginHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/login.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:RegisterPasswordAccountHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/register.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:ResetPasswordHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/reset.html.ejs"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Override",
+      "overrideInstance": { "@id": "urn:solid-server:default:UpdatePasswordHtml" },
+      "overrideSteps": [
+        {
+          "@type": "OverrideParameters",
+          "overrideValue": {
+            "@type": "HtmlViewEntry",
+            "filePath": "templates/identity/password/update.html.ejs"
+          }
+        }
+      ]
+    }
+  ]
+}
