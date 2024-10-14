@@ -13,11 +13,13 @@ RUN npm ci --unsafe-perm && npm run build
 # Runtime stage
 FROM node:18-alpine
 
+# Install necessary tools
+RUN apk add --no-cache bash gettext
+
 # Add contact informations for questions about the container
 LABEL maintainer="Solid Community Server Docker Image Maintainer <thomas.dupont@ugent.be>"
 
 # Container config & data dir for volume sharing
-# Defaults to filestorage with /data directory (passed through CMD below)
 RUN mkdir /config /data
 
 # Set current directory
@@ -30,12 +32,14 @@ COPY --from=build /community-server/dist ./dist
 COPY --from=build /community-server/node_modules ./node_modules
 COPY --from=build /community-server/templates ./templates
 
+COPY --from=build /community-server/docker/communitySolidServer/config-prod.json.template config/config-prod.json.template
+
+# Set environment variables at runtime (handled by docker-compose)
+ENV CSS_CONFIG=config/config-prod.json
+ENV CSS_MAIN_MODULE_PATH=./
+
 # Informs Docker that the container listens on the specified network port at runtime
 EXPOSE 3000
 
-# Set command run by the container
-ENTRYPOINT [ "node", "node_modules/@solid/community-server/bin/server.js" ]
-
-# By default run in filemode (overriden if passing alternative arguments or env vars)
-ENV CSS_CONFIG=config/config.json
-ENV CSS_MAIN_MODULE_PATH=./
+# At runtime, envsubst is used to substitute environment variables
+ENTRYPOINT [ "sh", "-c", "envsubst < config/config-prod.json.template > config/config-prod.json && node node_modules/@solid/community-server/bin/server.js" ]

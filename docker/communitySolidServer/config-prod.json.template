@@ -1,0 +1,29 @@
+{
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/lightover-solid-server/^0.0.0/components/context.jsonld"
+  ],
+  "import": [
+    "lss:config/config.json"
+  ],
+  "@graph": [
+    {
+      "comment": "A Solid server that stores its resources on disk and uses WAC for authorization."
+    },
+    {
+      "comment": "The settings of your email server.",
+      "@type": "Override",
+      "overrideInstance": {
+        "@id": "urn:solid-server:default:EmailSender"
+      },
+      "overrideParameters": {
+        "@type": "BaseEmailSender",
+        "senderName": "${EMAIL_SENDER_NAME}",
+        "emailConfig_host": "${EMAIL_HOST}",
+        "emailConfig_port": ${EMAIL_PORT},
+        "emailConfig_auth_user": "${EMAIL_AUTH_USER}",
+        "emailConfig_auth_pass": "${EMAIL_AUTH_PASS}"
+      }
+    }
+  ]
+}

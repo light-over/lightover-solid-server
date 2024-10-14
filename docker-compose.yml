@@ -3,18 +3,21 @@ services:
   nodejs: 
     build: 
       context: .
-      args:
-        DOMAIN: $DOMAIN_NAME
     image: tiotobing/nodejs
     restart: unless-stopped
     container_name: community-solid-server
     environment:
-      CSS_ROOT_FILE_PATH: /data/
-      CSS_BASE_URL: "$PROTOCOL://$DOMAIN_NAME/"
+      CSS_ROOT_FILE_PATH: /data
+      CSS_BASE_URL: "${PROTOCOL}://${DOMAIN_NAME}/"
+      EMAIL_SENDER_NAME: "${EMAIL_SENDER_NAME}"
+      EMAIL_HOST: "${EMAIL_HOST}"
+      EMAIL_PORT: "${EMAIL_PORT}"
+      EMAIL_AUTH_USER: "${EMAIL_AUTH_USER}"
+      EMAIL_AUTH_PASS: "${EMAIL_AUTH_PASS}"
     volumes:
-      - $DATA_FOLDER:/data
+      - ${DATA_FOLDER}:/data
     extra_hosts:
-      - "$DOMAIN_NAME:172.17.0.1"
+      - "${DOMAIN_NAME}:172.17.0.1"
   nginx: 
     build: ./docker/nginx
     image: tiotobing/nginx
