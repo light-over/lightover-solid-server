@@ -25,7 +25,6 @@ WORKDIR /community-server
 
 # Copy runtime files from build stage
 COPY --from=build /community-server/package.json .
-COPY --from=build /community-server/bin ./bin
 COPY --from=build /community-server/config ./config
 COPY --from=build /community-server/dist ./dist
 COPY --from=build /community-server/node_modules ./node_modules
@@ -35,7 +34,7 @@ COPY --from=build /community-server/templates ./templates
 EXPOSE 3000
 
 # Set command run by the container
-ENTRYPOINT [ "node", "bin/server.js" ]
+ENTRYPOINT [ "node", "node_modules/@solid/community-server/bin/server.js" ]
 
 # By default run in filemode (overriden if passing alternative arguments or env vars)
-ENV CSS_CONFIG=config/file.json
+ENV CSS_CONFIG=config/config.json
