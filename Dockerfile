@@ -38,3 +38,4 @@ ENTRYPOINT [ "node", "node_modules/@solid/community-server/bin/server.js" ]
 
 # By default run in filemode (overriden if passing alternative arguments or env vars)
 ENV CSS_CONFIG=config/config.json
+ENV CSS_MAIN_MODULE_PATH=./
